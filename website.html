@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Automated Watering Program</title>
+  </head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <body>
+        <h1>Automated Watering Program</h1>
+
+            <h3 style="color: red;"> Type in your Soil Saturation Threshold (Set between 10 and 90) </h3>
+            <input id = "new_soil_threshold"> 
+            <button style="background-color: grey; color: white;", button onclick="change_soil_threshold()"> Submit </button>
+            <h4 style="color: blue;" id="message1"> </h4>
+            <label> The Soil Threshold will set the minimum soil saturation which is required for a plant.
+            <br>
+            <label> Example; if the Threshold is set to 15, water pump will activate once saturation is 15%.</label>
+            <br>
+            <label style="color: orange;"> Default Saturation Threshold value is 10% </label> 
+
+            <br> <br> <br>
+            <h3 style="color: red;"> Type in your Delay Duration </h3>
+            <input id = "new_delay_duration"> 
+            <button style="background-color: grey; color: white;", button onclick="change_delay_duration()"> Submit </button>
+            <h4 style="color: blue;" id="message2"> </h4>
+            <label> The delay duration is the intervals which it takes to read the next soil moisture saturation.
+            <br>
+            <label> Example; if the duration is set to 10, then next soil data will be recorded 10 seconds later.</label>
+            <br>
+            <label style="color: orange;"> Default Delay Duration value is 10 seconds </label> 
+
+            <br> <br> <br> 
+            <h3 style="color: red;"> Type in your Motor Duration </h3> 
+            <input id = "new_motor_duration"> 
+            <button style="background-color: grey; color: white;", button onclick="change_motor_duration()"> Submit </button>
+            <h4 style="color: blue;" id="message3"> </h4>
+            <label> The motor duration is how long the motor will explode water out of the pipe during threshold.
+            <br>
+            <label> Example; if the duration is set to 5, pump will remain on for 5 seconds once reached 15 threshold.</label>
+            <br>
+            <label style="color: orange;"> Default Motor Duration is 4 seconds </label> 
+
+            
+            <script>
+            var deviceID = "e00fce68777387e21be98112"; // Replace with your Particle device ID
+            var accessToken = "c8a1afedb15ddbb9c18d970afe429d04f00466b5"; // Replace with your Particle access token
+
+            function change_soil_threshold() {
+                let new_soil_threshold = document.querySelector("#new_soil_threshold");
+                let message = document.querySelector("#message1");
+                message.innerHTML = "Current Threshold: " + new_soil_threshold.value + "%"
+                var url = "https://api.particle.io/v1/devices/" + deviceID + "/soil_threshold_function";
+                var data = { args: new_soil_threshold.value, access_token: accessToken };
+                $.post(url, data);
+            }
+
+            function change_delay_duration() {
+                let new_delay_duration = document.querySelector("#new_delay_duration");
+                let message = document.querySelector("#message2");
+                message.innerHTML = "Current Delay Duration: " + new_delay_duration.value + " seconds"
+                var url = "https://api.particle.io/v1/devices/" + deviceID + "/second_delay_function";
+                var data = { args: new_delay_duration.value, access_token: accessToken };
+                $.post(url, data);
+            }
+
+            function change_motor_duration() {
+                let new_motor_duration = document.querySelector("#new_motor_duration");
+                let message = document.querySelector("#message3");
+                message.innerHTML = "Current Motor Duration: " + new_motor_duration.value + " seconds"
+                var url = "https://api.particle.io/v1/devices/" + deviceID + "/motor_duration_function";
+                var data = { args: new_motor_duration.value, access_token: accessToken };
+                $.post(url, data);
+            }
+
+    </script>
+
+  </body>
+</html>
